@@ -20,10 +20,10 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Transactional
+//    @Transactional
     @Override
     public RegisterResponseDto register(RegisterRequestDto user){
-        if( userRepository.findByEmail(user.getEmail()).isPresent() ){
+        if( userRepository.findByEmail(user.getEmail()).isPresent() ) {
             throw new InputException("Email already exists");
         }
 
@@ -33,7 +33,9 @@ public class UserServiceImpl implements UserService {
         registeredUser.setReferralCode(code);
 
         User savedUser = userRepository.save(registeredUser);
-        return RegisterResponseDto.toDto(savedUser);
+        return RegisterResponseDto.toDto(registeredUser);
 
     }
+
+
 }

@@ -20,8 +20,8 @@ public class User {
 
     @Size(max = 150)
     @NotNull
-    @Column(name = "username", nullable = false, length = 50)
-    private String username;
+    @Column(name = "fullname", nullable = false, length = 50)
+    private String fullname;
 
     @Size(max = 150)
     @NotNull
@@ -33,7 +33,6 @@ public class User {
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
-    @Size(max = 20)
     @Enumerated(EnumType.STRING)
     @NotNull
     @Column(name = "role", nullable = false, length = 20)
@@ -43,9 +42,9 @@ public class User {
     @Column(name = "profile_picture", length = 250)
     private String profilePicture;
 
-    @Size(max = 20)
+    @Size(max = 50)
     @NotNull
-    @Column(name = "referral_code", nullable = false, length = 20)
+    @Column(name = "referral_code", unique = true, length = 50)
     private String referralCode;
 
     @NotNull

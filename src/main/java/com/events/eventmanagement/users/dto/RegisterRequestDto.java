@@ -25,7 +25,7 @@ public class RegisterRequestDto {
 
     public User toEntity(){
         User user = new User();
-        user.setUsername(name);
+        user.setFullname(name);
         user.setEmail(email);
         user.setPassword(password);
         user.setRole(role);

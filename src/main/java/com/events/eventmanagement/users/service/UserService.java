@@ -5,4 +5,5 @@ import com.events.eventmanagement.users.dto.RegisterResponseDto;
 
 public interface UserService {
     RegisterResponseDto register(RegisterRequestDto user);
+
 }

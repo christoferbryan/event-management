@@ -10,7 +10,7 @@ public class RegisterResponseDto {
 
     public static RegisterResponseDto toDto(User user){
         RegisterResponseDto responseDto = new RegisterResponseDto();
-        responseDto.setName(user.getUsername());
+        responseDto.setName(user.getFullname());
         responseDto.setEmail(user.getEmail());
         return responseDto;
     }
