@@ -1,7 +1,9 @@
 package com.events.eventmanagement.users.service.impl;
 
+import com.events.eventmanagement.exceptions.DataNotFoundException;
 import com.events.eventmanagement.exceptions.InputException;
 import com.events.eventmanagement.generator.ReferralCodeGenerator;
+import com.events.eventmanagement.users.dto.ProfileDataDto;
 import com.events.eventmanagement.users.dto.RegisterRequestDto;
 import com.events.eventmanagement.users.dto.RegisterResponseDto;
 import com.events.eventmanagement.users.entity.User;
@@ -34,7 +36,13 @@ public class UserServiceImpl implements UserService {
 
         User savedUser = userRepository.save(registeredUser);
         return RegisterResponseDto.toDto(registeredUser);
+    }
 
+    @Override
+    public ProfileDataDto getProfileData(String email){
+        User currentUser = userRepository.findByEmail(email).orElseThrow(() -> new DataNotFoundException("User not found"));
+
+        return ProfileDataDto.toDto(currentUser);
     }
 
 
