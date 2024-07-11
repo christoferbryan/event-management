@@ -1,4 +1,7 @@
 package com.events.eventmanagement.auth.service;
 
-public class AuthService {
+import org.springframework.security.core.Authentication;
+
+public interface AuthService {
+    String generateToken(Authentication authentication);
 }
