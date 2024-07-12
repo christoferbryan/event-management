@@ -42,7 +42,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         UserAuth userDetails = (UserAuth) authentication.getPrincipal();
-        log.info("Token requested for user" + userDetails.getUsername() + "with roles" + userDetails.getAuthorities());
+        log.info("Token requested for user " + userDetails.getUsername() + "with roles" + userDetails.getAuthorities());
         String token = authService.generateToken(authentication);
 
         LoginResponseDto response = new LoginResponseDto();
@@ -50,6 +50,8 @@ public class AuthController {
         response.setToken(token);
 
         Cookie cookie = new Cookie("sid", token);
+        cookie.setPath("/");
+        cookie.setMaxAge(3600);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Set-cookie", cookie.getName() + "=" + cookie.getValue() + "; Path=/; HttpOnly");
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
