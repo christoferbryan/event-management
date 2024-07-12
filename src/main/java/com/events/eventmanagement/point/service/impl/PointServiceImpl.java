@@ -13,11 +13,9 @@ import java.time.temporal.ChronoUnit;
 @Service
 public class PointServiceImpl implements PointService {
     private final PointRepository pointRepository;
-    private final UserService userService;
 
-    public PointServiceImpl(PointRepository pointRepository, UserService userService){
+    public PointServiceImpl(PointRepository pointRepository){
         this.pointRepository = pointRepository;
-        this.userService = userService;
     }
     @Override
     public void addPoints(User user, int points) {
@@ -32,10 +30,9 @@ public class PointServiceImpl implements PointService {
     }
 
     @Override
-    public int getActiveUserPoints(String email) {
+    public int getActiveUserPoints(Long userId) {
         Instant now = Instant.now();
-        User userData = userService.getUserByEmail(email);
 
-        return pointRepository.getActiveUserPoints(userData.getId(), now);
+        return pointRepository.getActiveUserPoints(userId, now);
     }
 }
