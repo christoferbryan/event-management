@@ -10,7 +10,7 @@ public class ProfileDataDto {
     private String email;
     private String profilePictureUrl;
     private String referralCode;
-//    private Integer points;
+    private Integer points;
 
     public static ProfileDataDto toDto(User user){
         ProfileDataDto profileDataDto = new ProfileDataDto();

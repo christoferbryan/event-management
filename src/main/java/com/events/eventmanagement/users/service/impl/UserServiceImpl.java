@@ -3,6 +3,7 @@ package com.events.eventmanagement.users.service.impl;
 import com.events.eventmanagement.exceptions.DataNotFoundException;
 import com.events.eventmanagement.exceptions.InputException;
 import com.events.eventmanagement.generator.ReferralCodeGenerator;
+import com.events.eventmanagement.point.service.PointService;
 import com.events.eventmanagement.users.dto.ProfileDataDto;
 import com.events.eventmanagement.users.dto.RegisterRequestDto;
 import com.events.eventmanagement.users.dto.RegisterResponseDto;
@@ -13,16 +14,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder){
+    private final PointService pointService;
+    UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, PointService pointService){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.pointService = pointService;
     }
 
-//    @Transactional
+    @Transactional
     @Override
     public RegisterResponseDto register(RegisterRequestDto user){
         if( userRepository.findByEmail(user.getEmail()).isPresent() ) {
@@ -41,9 +46,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public ProfileDataDto getProfileData(String email){
         User currentUser = userRepository.findByEmail(email).orElseThrow(() -> new DataNotFoundException("User not found"));
+        ProfileDataDto profileDto = ProfileDataDto.toDto(currentUser);
+        profileDto.setPoints(pointService.getActiveUserPoints(email));
 
-        return ProfileDataDto.toDto(currentUser);
+        return profileDto;
     }
 
-
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new DataNotFoundException("User not found"));
+    }
 }
