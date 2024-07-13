@@ -24,7 +24,7 @@ public class PointServiceImpl implements PointService {
         Point point = new Point();
         point.setUser(user);
         point.setPoints(points);
-        point.setExpiredAt(now.plus(3, ChronoUnit.MONTHS));
+        point.setExpiredAt(now.plus(90, ChronoUnit.DAYS));
 
         pointRepository.save(point);
     }

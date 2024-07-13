@@ -4,7 +4,9 @@ import com.events.eventmanagement.referral.entity.Referral;
 import com.events.eventmanagement.referral.repository.ReferralRepository;
 import com.events.eventmanagement.referral.service.ReferralService;
 import com.events.eventmanagement.users.entity.User;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ReferralServiceImpl implements ReferralService {
     private final ReferralRepository referralRepository;
 

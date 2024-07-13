@@ -13,8 +13,7 @@ import java.time.Instant;
 @Table(name = "users", schema = "public")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_gen")
-    @SequenceGenerator(name = "users_id_gen", sequenceName = "users_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -42,9 +41,8 @@ public class User {
     @Column(name = "profile_picture", length = 250)
     private String profilePicture;
 
-    @Size(max = 50)
-    @NotNull
-    @Column(name = "referral_code", unique = true, length = 50)
+    @Size(max = 20)
+    @Column(name = "referral_code", unique = true, length = 20)
     private String referralCode;
 
     @NotNull

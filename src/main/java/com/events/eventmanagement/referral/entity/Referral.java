@@ -13,8 +13,7 @@ import java.time.Instant;
 @Table(name = "referral", schema = "public")
 public class Referral {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_gen")
-    @SequenceGenerator(name = "users_id_gen", sequenceName = "users_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -30,7 +29,7 @@ public class Referral {
 
     @NotNull
     @Column(name = "is_claimed", nullable = false)
-    private Boolean isClaimed;
+    private Boolean isClaimed = false;
 
     @NotNull
     @ColumnDefault("CURRENT_TIMESTAMP")
