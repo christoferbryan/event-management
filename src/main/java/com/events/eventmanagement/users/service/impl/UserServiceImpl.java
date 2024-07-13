@@ -4,6 +4,7 @@ import com.events.eventmanagement.exceptions.DataNotFoundException;
 import com.events.eventmanagement.exceptions.InputException;
 import com.events.eventmanagement.generator.ReferralCodeGenerator;
 import com.events.eventmanagement.point.service.PointService;
+import com.events.eventmanagement.referral.service.ReferralService;
 import com.events.eventmanagement.users.dto.ProfileDataDto;
 import com.events.eventmanagement.users.dto.RegisterRequestDto;
 import com.events.eventmanagement.users.dto.RegisterResponseDto;
@@ -21,10 +22,12 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final PointService pointService;
-    UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, PointService pointService){
+    private final ReferralService referralService;
+    UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, PointService pointService, ReferralService referralService){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.pointService = pointService;
+        this.referralService = referralService;
     }
 
     @Transactional
@@ -36,10 +39,23 @@ public class UserServiceImpl implements UserService {
 
         User registeredUser = user.toEntity();
         registeredUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        String code = ReferralCodeGenerator.generateReferralCode();
-        registeredUser.setReferralCode(code);
 
-        User savedUser = userRepository.save(registeredUser);
+        if(registeredUser.getRole() == User.UserRole.CUSTOMER){
+            String code = ReferralCodeGenerator.generateReferralCode();
+            registeredUser.setReferralCode(code);
+        }
+        else {
+            registeredUser.setReferralCode(null);
+        }
+
+        userRepository.save(registeredUser);
+
+        if(!user.getReferralCode().isEmpty() && registeredUser.getRole() == User.UserRole.CUSTOMER){
+            User referrer = userRepository.findByReferralCode(user.getReferralCode()).orElseThrow(() -> new DataNotFoundException("User not found"));
+            referralService.createReferral(referrer, registeredUser);
+            pointService.addPoints(referrer, 10000);
+        }
+
         return RegisterResponseDto.toDto(registeredUser);
     }
 
