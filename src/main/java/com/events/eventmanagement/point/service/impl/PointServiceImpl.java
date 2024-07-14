@@ -47,6 +47,7 @@ public class PointServiceImpl implements PointService {
         Point point = new Point();
         point.setUser(user);
         point.setPoints(Math.negateExact(pointsUsed));
+        pointRepository.save(point);
 
         return pointsUsed;
     }

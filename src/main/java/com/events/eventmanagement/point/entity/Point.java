@@ -26,8 +26,7 @@ public class Point {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @NotNull
-    @Column(name = "expired_at", nullable = false)
+    @Column(name = "expired_at")
     private Instant expiredAt;
 
     @NotNull
