@@ -35,4 +35,19 @@ public class PointServiceImpl implements PointService {
 
         return pointRepository.getActiveUserPoints(userId, now);
     }
+
+    @Override
+    public int redeemPoints(User user, int totalPrice) {
+
+        int pointsUsed;
+        int totalActivePoints = getActiveUserPoints(user.getId());
+
+        pointsUsed = Math.min(totalPrice, totalActivePoints);
+
+        Point point = new Point();
+        point.setUser(user);
+        point.setPoints(Math.negateExact(pointsUsed));
+
+        return pointsUsed;
+    }
 }
