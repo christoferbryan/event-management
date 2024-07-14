@@ -55,9 +55,6 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
-    @Column(name = "deleted_at")
-    private Instant deletedAt;
-
     @PrePersist
     public void prePersist(){
         this.createdAt = Instant.now();
@@ -69,10 +66,6 @@ public class User {
         this.updatedAt = Instant.now();
     }
 
-    @PreRemove
-    public void preRemove(){
-        this.deletedAt = Instant.now();
-    }
     public enum UserRole {
         CUSTOMER,
         ORGANIZER
