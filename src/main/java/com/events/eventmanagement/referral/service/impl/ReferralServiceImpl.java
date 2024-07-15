@@ -14,11 +14,11 @@ public class ReferralServiceImpl implements ReferralService {
         this.referralRepository = referralRepository;
     }
     @Override
-    public void createReferral(User referrer, User referee) {
+    public Referral createReferral(User referrer, User referee) {
         Referral referral = new Referral();
         referral.setReferrer(referrer);
         referral.setReferee(referee);
 
-        referralRepository.save(referral);
+        return referralRepository.save(referral);
     }
 }

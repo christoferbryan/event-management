@@ -5,10 +5,12 @@ import com.events.eventmanagement.coupon.entity.Coupon;
 import com.events.eventmanagement.coupon.repository.CouponRepository;
 import com.events.eventmanagement.coupon.service.CouponService;
 import com.events.eventmanagement.event.entity.Event;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
+@Service
 public class CouponServiceImpl implements CouponService {
 
     private final CouponRepository couponRepository;

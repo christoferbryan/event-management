@@ -1,9 +1,12 @@
 package com.events.eventmanagement.users.service.impl;
 
+import com.events.eventmanagement.coupon.dto.CouponDto;
+import com.events.eventmanagement.coupon.service.CouponService;
 import com.events.eventmanagement.exceptions.DataNotFoundException;
 import com.events.eventmanagement.exceptions.InputException;
 import com.events.eventmanagement.generator.ReferralCodeGenerator;
 import com.events.eventmanagement.point.service.PointService;
+import com.events.eventmanagement.referral.entity.Referral;
 import com.events.eventmanagement.referral.service.ReferralService;
 import com.events.eventmanagement.users.dto.ProfileDataDto;
 import com.events.eventmanagement.users.dto.RegisterRequestDto;
@@ -23,11 +26,13 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final PointService pointService;
     private final ReferralService referralService;
-    UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, PointService pointService, ReferralService referralService){
+    private final CouponService couponService;
+    UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, PointService pointService, ReferralService referralService, CouponService couponService){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.pointService = pointService;
         this.referralService = referralService;
+        this.couponService = couponService;
     }
 
     @Transactional
@@ -52,8 +57,13 @@ public class UserServiceImpl implements UserService {
 
         if(!user.getReferralCode().isEmpty() && registeredUser.getRole() == User.UserRole.CUSTOMER){
             User referrer = userRepository.findByReferralCode(user.getReferralCode()).orElseThrow(() -> new DataNotFoundException("User not found"));
-            referralService.createReferral(referrer, registeredUser);
+            Referral referral = referralService.createReferral(referrer, registeredUser);
             pointService.addPoints(referrer, 10000);
+
+            CouponDto couponDto = new CouponDto();
+            couponDto.setIsReferral(true);
+            couponDto.setReferral(referral);
+            couponService.createCoupon(couponDto);
         }
 
         return RegisterResponseDto.toDto(registeredUser);
