@@ -1,6 +1,7 @@
 package com.events.eventmanagement.coupon.entity;
 
 import com.events.eventmanagement.event.entity.Event;
+import com.events.eventmanagement.referral.entity.Referral;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -27,9 +28,8 @@ public class Coupon {
     @Column(name = "discount", nullable = false)
     private int discount;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn(name = "event_id", nullable = false)
+    @JoinColumn(name = "event_id")
     private Event event;
 
     @NotNull
@@ -39,6 +39,10 @@ public class Coupon {
     @NotNull
     @Column(name = "is_referral", nullable = false)
     private Boolean isReferral;
+
+    @OneToOne
+    @JoinColumn(name = "referral_id")
+    private Referral referral;
 
     @NotNull
     @Column(name = "expired_at", nullable = false)
