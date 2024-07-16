@@ -37,6 +37,7 @@ public class Coupon {
     private int usageLimit;
 
     @NotNull
+    @ColumnDefault("false")
     @Column(name = "is_referral", nullable = false)
     private Boolean isReferral;
 

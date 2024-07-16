@@ -30,7 +30,7 @@ public class Ticket {
 
     @NotNull
     @Column(name = "price", nullable = false)
-    private Double price;
+    private int price;
 
     @NotNull
     @Column(name = "available_seats", nullable = false)

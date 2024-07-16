@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class TicketDto {
     private String name;
-    private Double price;
+    private int price;
     private int availableSeats;
 
     public Ticket toEntity(){

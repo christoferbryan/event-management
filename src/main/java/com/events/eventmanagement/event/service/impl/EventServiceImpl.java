@@ -6,6 +6,7 @@ import com.events.eventmanagement.coupon.entity.Coupon;
 import com.events.eventmanagement.coupon.service.CouponService;
 import com.events.eventmanagement.event.dto.CreateEventReqDto;
 import com.events.eventmanagement.event.dto.CreateEventRespDto;
+import com.events.eventmanagement.event.dto.GetEventsDto;
 import com.events.eventmanagement.event.entity.Event;
 import com.events.eventmanagement.event.repository.EventRepository;
 import com.events.eventmanagement.event.service.EventService;
@@ -14,7 +15,15 @@ import com.events.eventmanagement.ticket.entity.Ticket;
 import com.events.eventmanagement.ticket.service.TicketService;
 import com.events.eventmanagement.users.entity.User;
 import com.events.eventmanagement.users.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -40,16 +49,32 @@ public class EventServiceImpl implements EventService {
         newEvent.setCategory(categoryService.getCategoryById(createEventReqDto.getCategoryId()));
         eventRepository.save(newEvent);
 
+        Set<Ticket> tickets = new LinkedHashSet<>();
+        Set<Coupon> coupons = new LinkedHashSet<>();
+
         for(TicketDto ticketData : createEventReqDto.getTickets()){
             Ticket ticket = ticketData.toEntity();
             ticket.setEvent(newEvent);
             ticketService.saveNewTicket(ticket);
+            tickets.add(ticket);
         }
 
         for(CouponDto couponData : createEventReqDto.getCoupons()){
-            couponService.createCoupon(couponData, newEvent);
+            Coupon coupon = couponService.createCoupon(couponData, newEvent);
+            coupons.add(coupon);
         }
 
+        newEvent.setTickets(tickets);
+        newEvent.setCoupons(coupons);
+
         return CreateEventRespDto.toDto(newEvent);
+    }
+
+    @Override
+    public List<GetEventsDto> getAllEvents(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Event> allEvents = eventRepository.findAll(pageable);
+
+        return allEvents.stream().map(GetEventsDto::toDto).toList();
     }
 }

@@ -19,7 +19,7 @@ public class CouponServiceImpl implements CouponService {
         this.couponRepository = couponRepository;
     }
     @Override
-    public void createCoupon(CouponDto couponDto, Event event) {
+    public Coupon createCoupon(CouponDto couponDto, Event event) {
         if(couponDto.getIsReferral()){
             couponDto.setDiscount(10);
             couponDto.setName("Referral Coupon 10% Off");
@@ -30,11 +30,11 @@ public class CouponServiceImpl implements CouponService {
         Coupon coupon = couponDto.toEntity();
         coupon.setEvent(event);
 
-        couponRepository.save(coupon);
+        return couponRepository.save(coupon);
     }
 
     @Override
-    public void createCoupon(CouponDto couponDto) {
-        createCoupon(couponDto, null);
+    public Coupon createCoupon(CouponDto couponDto) {
+        return createCoupon(couponDto, null);
     }
 }
