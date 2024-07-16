@@ -1,6 +1,7 @@
 package com.events.eventmanagement.event.entity;
 
 import com.events.eventmanagement.category.entity.Category;
+import com.events.eventmanagement.ticket.entity.Ticket;
 import com.events.eventmanagement.users.entity.User;
 import com.events.eventmanagement.coupon.entity.Coupon;
 import jakarta.persistence.*;
@@ -43,6 +44,10 @@ public class Event {
     private String location;
 
     @NotNull
+    @Column(name = "is_paid", nullable = false)
+    private Boolean isPaid;
+
+    @NotNull
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
@@ -62,6 +67,9 @@ public class Event {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private Set<Coupon> coupons = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private Set<Ticket> tickets = new LinkedHashSet<>();
 
     @NotNull
     @ColumnDefault("CURRENT_TIMESTAMP")

@@ -21,8 +21,14 @@ public class CouponDto {
         coupon.setName(name);
         coupon.setDiscount(discount);
         coupon.setUsageLimit(usageLimit);
-        coupon.setReferral(referral);
         coupon.setExpiredAt(expiryDate);
+
+        if(referral != null){
+            coupon.setReferral(referral);
+        }
+        else {
+            coupon.setReferral(null);
+        }
 
         return coupon;
     }

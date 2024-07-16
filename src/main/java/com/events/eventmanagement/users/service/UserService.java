@@ -8,4 +8,6 @@ import com.events.eventmanagement.users.entity.User;
 public interface UserService {
     RegisterResponseDto register(RegisterRequestDto user);
     ProfileDataDto getProfileData(String email);
+
+    User getUserByEmail(String email);
 }
