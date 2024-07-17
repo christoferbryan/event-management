@@ -31,4 +31,9 @@ public class EventController {
     public ResponseEntity<?> getAllEvents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "6") int size ){
         return Response.successResponse("Events are retrieved successfully", eventService.getAllEvents(page, size));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> searchEventById(@PathVariable("id") Long id){
+        return Response.successResponse("Event with id " + id + " fetched successfully", eventService.searchEventById(id));
+    }
 }

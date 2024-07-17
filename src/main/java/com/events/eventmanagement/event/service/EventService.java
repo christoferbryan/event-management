@@ -12,4 +12,5 @@ public interface EventService {
     List<GetEventsDto> getAllEvents(int page, int size);
 
     Event getEventById(Long id);
+    GetEventsDto searchEventById(Long id);
 }

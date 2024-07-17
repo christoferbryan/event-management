@@ -83,4 +83,11 @@ public class EventServiceImpl implements EventService {
     public Event getEventById(Long id) {
         return eventRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Event not found"));
     }
+
+    @Override
+    public GetEventsDto searchEventById(Long id) {
+        Event event = eventRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Event not found"));
+
+        return GetEventsDto.toDto(event);
+    }
 }
