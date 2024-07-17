@@ -9,6 +9,7 @@ import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -39,15 +40,15 @@ public class Coupon {
     @NotNull
     @ColumnDefault("false")
     @Column(name = "is_referral", nullable = false)
-    private Boolean isReferral;
+    private Boolean isReferral = false;
 
-    @OneToOne
-    @JoinColumn(name = "referral_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "referral_id", referencedColumnName = "id")
     private Referral referral;
 
     @NotNull
     @Column(name = "expired_at", nullable = false)
-    private Instant expiredAt;
+    private LocalDate expiredAt;
 
     @NotNull
     @ColumnDefault("CURRENT_TIMESTAMP")

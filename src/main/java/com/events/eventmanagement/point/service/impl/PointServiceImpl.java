@@ -37,7 +37,7 @@ public class PointServiceImpl implements PointService {
     }
 
     @Override
-    public int redeemPoints(User user, int totalPrice) {
+    public int redeemUserPoints(User user, int totalPrice) {
 
         int pointsUsed;
         int totalActivePoints = getActiveUserPoints(user.getId());

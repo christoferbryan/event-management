@@ -5,6 +5,7 @@ import com.events.eventmanagement.referral.entity.Referral;
 import lombok.Data;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 public class CouponDto {
@@ -13,7 +14,7 @@ public class CouponDto {
     private int discount;
     private int usageLimit;
     private Referral referral;
-    private Instant expiryDate;
+    private LocalDate expiryDate;
 
     public Coupon toEntity(){
         Coupon coupon = new Coupon();

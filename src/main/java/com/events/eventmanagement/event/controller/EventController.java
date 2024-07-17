@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/event")
+@RequestMapping("/api/v1/events")
 public class EventController {
     private final EventService eventService;
 
@@ -27,7 +27,7 @@ public class EventController {
         return Response.successResponse("Event created successfully", eventService.createEvent(createEventReqDto, email));
     }
 
-    @GetMapping("/events")
+    @GetMapping("")
     public ResponseEntity<?> getAllEvents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "6") int size ){
         return Response.successResponse("Events are retrieved successfully", eventService.getAllEvents(page, size));
     }

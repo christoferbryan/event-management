@@ -6,6 +6,6 @@ public interface PointService {
     void addPoints(User user, int points);
     int getActiveUserPoints(Long userId);
 
-    int redeemPoints(User user, int totalPrice);
+    int redeemUserPoints(User user, int totalPrice);
 
 }

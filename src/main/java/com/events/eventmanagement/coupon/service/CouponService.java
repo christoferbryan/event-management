@@ -7,4 +7,8 @@ import com.events.eventmanagement.event.entity.Event;
 public interface CouponService {
     Coupon createCoupon(CouponDto couponDto, Event event);
     Coupon createCoupon(CouponDto couponDto);
+
+    int useCoupon(Long couponId, int totalAmount);
+
+    Coupon getCouponById(Long id);
 }

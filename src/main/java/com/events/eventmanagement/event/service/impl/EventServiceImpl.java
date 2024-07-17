@@ -10,6 +10,7 @@ import com.events.eventmanagement.event.dto.GetEventsDto;
 import com.events.eventmanagement.event.entity.Event;
 import com.events.eventmanagement.event.repository.EventRepository;
 import com.events.eventmanagement.event.service.EventService;
+import com.events.eventmanagement.exceptions.DataNotFoundException;
 import com.events.eventmanagement.ticket.dto.TicketDto;
 import com.events.eventmanagement.ticket.entity.Ticket;
 import com.events.eventmanagement.ticket.service.TicketService;
@@ -76,5 +77,10 @@ public class EventServiceImpl implements EventService {
         Page<Event> allEvents = eventRepository.findAll(pageable);
 
         return allEvents.stream().map(GetEventsDto::toDto).toList();
+    }
+
+    @Override
+    public Event getEventById(Long id) {
+        return eventRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Event not found"));
     }
 }
