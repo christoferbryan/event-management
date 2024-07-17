@@ -19,7 +19,7 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    @PostMapping("")
+    @PostMapping("/create-event")
     public ResponseEntity<?> createEvent(@RequestBody CreateEventReqDto createEventReqDto){
         var claims = Claims.getClaimsFromJwt();
         String email = (String) claims.get("sub");
