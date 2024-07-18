@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(registeredUser);
 
-        if(!user.getReferralCode().isEmpty() && registeredUser.getRole() == User.UserRole.CUSTOMER){
+        if(user.getReferralCode() != null && registeredUser.getRole() == User.UserRole.CUSTOMER){
             User referrer = userRepository.findByReferralCode(user.getReferralCode()).orElseThrow(() -> new DataNotFoundException("User not found"));
             Referral referral = referralService.createReferral(referrer, registeredUser);
             pointService.addPoints(referrer, 10000);
@@ -73,7 +73,10 @@ public class UserServiceImpl implements UserService {
     public ProfileDataDto getProfileData(String email){
         User currentUser = userRepository.findByEmail(email).orElseThrow(() -> new DataNotFoundException("User not found"));
         ProfileDataDto profileDto = ProfileDataDto.toDto(currentUser);
-        profileDto.setPoints(pointService.getActiveUserPoints(currentUser.getId()));
+
+        if(currentUser.getRole() == User.UserRole.CUSTOMER){
+            profileDto.setPoints(pointService.getActiveUserPoints(currentUser.getId()));
+        }
 
         return profileDto;
     }
