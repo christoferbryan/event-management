@@ -8,7 +8,7 @@ public interface CouponService {
     Coupon createCoupon(CouponDto couponDto, Event event);
     Coupon createCoupon(CouponDto couponDto);
 
-    int useCoupon(Long couponId, int totalAmount);
+    int useCoupon(Long couponId, int totalAmount, Event event);
 
     Coupon getCouponById(Long id);
 }

@@ -5,6 +5,7 @@ import com.events.eventmanagement.coupon.entity.Coupon;
 import com.events.eventmanagement.coupon.service.CouponService;
 import com.events.eventmanagement.event.entity.Event;
 import com.events.eventmanagement.event.service.EventService;
+import com.events.eventmanagement.exceptions.InputException;
 import com.events.eventmanagement.point.service.PointService;
 import com.events.eventmanagement.ticket.entity.Ticket;
 import com.events.eventmanagement.ticket.service.TicketService;
@@ -131,6 +132,11 @@ public class TransactionServiceImpl implements TransactionService {
 
         for(TransactionItemDto trxItemDto : transactionRequestDto.getItems()){
             Ticket ticket = ticketService.getTicketById(trxItemDto.getTicketId());
+
+            if( !(ticket.getEvent().equals(event)) ){
+                throw new InputException("Ticket not valid for this event");
+            }
+
             int quantity = trxItemDto.getQuantity();
 
             TransactionItem transactionItem = new TransactionItem();
@@ -150,7 +156,7 @@ public class TransactionServiceImpl implements TransactionService {
             coupon = couponService.getCouponById(transactionRequestDto.getCouponId());
             transaction.setCoupon(coupon);
 
-            int discount = couponService.useCoupon(transactionRequestDto.getCouponId(), totalAmount);
+            int discount = couponService.useCoupon(transactionRequestDto.getCouponId(), totalAmount, event);
             totalAmount = totalAmount - discount;
         }
 

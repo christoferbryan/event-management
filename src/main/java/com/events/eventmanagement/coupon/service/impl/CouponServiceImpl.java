@@ -43,8 +43,12 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public int useCoupon(Long couponId, int totalAmount) {
+    public int useCoupon(Long couponId, int totalAmount, Event event) {
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new DataNotFoundException("Coupon not found"));
+
+        if( !(coupon.getEvent().equals(event)) ){
+            throw new InputException("Coupon not valid for this event");
+        }
 
         if(coupon.getExpiredAt().isBefore(LocalDate.now())){
             throw new InputException("Coupon is expired");

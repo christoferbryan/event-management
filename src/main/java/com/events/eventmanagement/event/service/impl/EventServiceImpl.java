@@ -10,6 +10,7 @@ import com.events.eventmanagement.event.dto.GetEventsDto;
 import com.events.eventmanagement.event.entity.Event;
 import com.events.eventmanagement.event.repository.EventRepository;
 import com.events.eventmanagement.event.service.EventService;
+import com.events.eventmanagement.event.specification.EventSpecification;
 import com.events.eventmanagement.exceptions.DataNotFoundException;
 import com.events.eventmanagement.ticket.dto.TicketDto;
 import com.events.eventmanagement.ticket.entity.Ticket;
@@ -19,9 +20,11 @@ import com.events.eventmanagement.users.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +79,15 @@ public class EventServiceImpl implements EventService {
         Page<Event> allEvents = eventRepository.findAll(pageable);
 
         return allEvents.stream().map(GetEventsDto::toDto).toList();
+    }
+
+    public List<GetEventsDto> getAllEvents(Pageable pageable, String title, String category, Long userId, LocalDate date) {
+        Specification<Event> specification = Specification.where(EventSpecification.byTitle(title))
+                .and(EventSpecification.byCategory(category))
+                .and(EventSpecification.byUserId(userId))
+                .and(EventSpecification.byDate(date));
+
+        return eventRepository.findAll(specification, pageable).stream().map(GetEventsDto::toDto).toList();
     }
 
     @Override
