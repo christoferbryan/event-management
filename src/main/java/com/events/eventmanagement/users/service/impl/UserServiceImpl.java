@@ -5,6 +5,7 @@ import com.events.eventmanagement.coupon.service.CouponService;
 import com.events.eventmanagement.exceptions.DataNotFoundException;
 import com.events.eventmanagement.exceptions.InputException;
 import com.events.eventmanagement.generator.ReferralCodeGenerator;
+import com.events.eventmanagement.point.entity.Point;
 import com.events.eventmanagement.point.service.PointService;
 import com.events.eventmanagement.referral.entity.Referral;
 import com.events.eventmanagement.referral.service.ReferralService;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -74,8 +76,15 @@ public class UserServiceImpl implements UserService {
         User currentUser = userRepository.findByEmail(email).orElseThrow(() -> new DataNotFoundException("User not found"));
         ProfileDataDto profileDto = ProfileDataDto.toDto(currentUser);
 
+        List<Point> pointsUser = pointService.getPointsByUserId(currentUser.getId());
+
         if(currentUser.getRole() == User.UserRole.CUSTOMER){
-            profileDto.setPoints(pointService.getActiveUserPoints(currentUser.getId()));
+            if(!pointsUser.isEmpty()){
+                profileDto.setPoints(pointService.getActiveUserPoints(currentUser.getId()));
+            }
+            else{
+                profileDto.setPoints(0);
+            }
         }
 
         return profileDto;

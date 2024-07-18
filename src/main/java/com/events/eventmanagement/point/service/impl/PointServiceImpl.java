@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 public class PointServiceImpl implements PointService {
@@ -50,5 +51,10 @@ public class PointServiceImpl implements PointService {
         pointRepository.save(point);
 
         return pointsUsed;
+    }
+
+    @Override
+    public List<Point> getPointsByUserId(Long userId) {
+        return pointRepository.getPointsByUserId(userId);
     }
 }
