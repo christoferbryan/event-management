@@ -78,12 +78,6 @@ public class EventServiceImpl implements EventService {
         return allEvents.stream().map(GetEventsDto::toDto).toList();
     }
 
-//    @Override
-//    public List<GetEventsDto> getAllEvents() {
-//        List<Event> events = eventRepository.findAll();
-//        return events.stream().map(GetEventsDto::toDto).toList();
-//    }
-
     @Override
     public Event getEventById(Long id) {
         return eventRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Event not found"));
@@ -94,5 +88,12 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Event not found"));
 
         return GetEventsDto.toDto(event);
+    }
+
+    @Override
+    public void deleteEventById(Long id) {
+        Event deletedEvent = eventRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Event not found"));
+
+        eventRepository.deleteById(id);
     }
 }

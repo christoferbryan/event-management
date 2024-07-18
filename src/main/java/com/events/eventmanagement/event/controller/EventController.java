@@ -32,13 +32,15 @@ public class EventController {
         return Response.successResponse("Events are retrieved successfully", eventService.getAllEvents(page, size));
     }
 
-//    @GetMapping("")
-//    public ResponseEntity<?> getAllEvents(){
-//        return Response.successResponse("Events are retrieved successfully", eventService.getAllEvents());
-//    }
-
     @GetMapping("/{id}")
     public ResponseEntity<?> searchEventById(@PathVariable("id") Long id){
         return Response.successResponse("Event with id " + id + " fetched successfully", eventService.searchEventById(id));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteEventById(@PathVariable("id") Long id){
+        eventService.deleteEventById(id);
+
+        return Response.successResponse("Delete event successful");
     }
 }
