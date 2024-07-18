@@ -13,10 +13,9 @@ import java.util.Set;
 @Entity
 @Table(name = "category", schema = "public")
 public class Category {
-
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "categories_id_gen")
-    @SequenceGenerator(name = "categories_id_gen", sequenceName = "categories_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 

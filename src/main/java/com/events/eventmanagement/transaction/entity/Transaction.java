@@ -20,8 +20,7 @@ import java.util.Set;
 @Table(name = "transaction", schema = "public")
 public class Transaction {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transactions_id_gen")
-    @SequenceGenerator(name = "transactions_id_gen", sequenceName = "transactions_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
