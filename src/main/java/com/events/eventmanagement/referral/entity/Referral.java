@@ -13,7 +13,8 @@ import java.time.Instant;
 @Table(name = "referral", schema = "public")
 public class Referral {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "referrals_id_gen")
+    @SequenceGenerator(name = "referrals_id_gen", sequenceName = "referrals_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 

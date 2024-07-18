@@ -10,7 +10,9 @@ import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -18,7 +20,8 @@ import java.util.Set;
 @Table(name = "transaction", schema = "public")
 public class Transaction {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transactions_id_gen")
+    @SequenceGenerator(name = "transactions_id_gen", sequenceName = "transactions_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -42,7 +45,7 @@ public class Transaction {
 
 
     @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
-    private Set<TransactionItem> trxItems = new LinkedHashSet<>();
+    private List<TransactionItem> trxItems = new ArrayList<>();
 
     @NotNull
     @ColumnDefault("CURRENT_TIMESTAMP")

@@ -14,7 +14,8 @@ import java.time.Instant;
 @Table(name = "ticket", schema = "public")
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tickets_id_gen")
+    @SequenceGenerator(name = "tickets_id_gen", sequenceName = "tickets_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 
