@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 public class CreateEventRespDto {
@@ -14,7 +15,7 @@ public class CreateEventRespDto {
     private String location;
     private Boolean isPaid;
     private LocalDate date;
-    private Instant time;
+    private LocalTime time;
 
     public static CreateEventRespDto toDto(Event event){
         CreateEventRespDto createEventRespDto = new CreateEventRespDto();

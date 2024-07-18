@@ -66,6 +66,7 @@ public class SecurityConfig {
                     auth.requestMatchers("/api/v1/users/register").permitAll();
                     auth.requestMatchers("/api/v1/events/**").permitAll();
                     auth.requestMatchers("/api/v1/events/create-event").hasAuthority("SCOPE_ORGANIZER");
+                    auth.requestMatchers("/api/v1/categories/**").hasAuthority("SCOPE_ORGANIZER");
                     auth.requestMatchers("/api/v1/auth/**").permitAll();
                     auth.anyRequest().authenticated();
                 })

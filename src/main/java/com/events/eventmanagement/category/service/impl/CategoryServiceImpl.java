@@ -33,6 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponseDto createCategory(CategoryRequestDto categoryRequestDto) {
         Category newCategory = categoryRequestDto.toEntity();
+        categoryRepository.save(newCategory);
 
         return CategoryResponseDto.toDto(newCategory);
     }

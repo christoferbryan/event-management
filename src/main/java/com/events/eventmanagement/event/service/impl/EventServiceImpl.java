@@ -22,9 +22,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -50,8 +49,8 @@ public class EventServiceImpl implements EventService {
         newEvent.setCategory(categoryService.getCategoryById(createEventReqDto.getCategoryId()));
         eventRepository.save(newEvent);
 
-        Set<Ticket> tickets = new LinkedHashSet<>();
-        Set<Coupon> coupons = new LinkedHashSet<>();
+        List<Ticket> tickets = new ArrayList<>();
+        List<Coupon> coupons = new ArrayList<>();
 
         for(TicketDto ticketData : createEventReqDto.getTickets()){
             Ticket ticket = ticketData.toEntity();
@@ -78,6 +77,12 @@ public class EventServiceImpl implements EventService {
 
         return allEvents.stream().map(GetEventsDto::toDto).toList();
     }
+
+//    @Override
+//    public List<GetEventsDto> getAllEvents() {
+//        List<Event> events = eventRepository.findAll();
+//        return events.stream().map(GetEventsDto::toDto).toList();
+//    }
 
     @Override
     public Event getEventById(Long id) {

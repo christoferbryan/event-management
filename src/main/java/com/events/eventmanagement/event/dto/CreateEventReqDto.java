@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Data
@@ -16,7 +17,7 @@ public class CreateEventReqDto {
     private String location;
     private Boolean isPaid;
     private LocalDate date;
-    private Instant time;
+    private LocalTime time;
     private Long categoryId;
     private List<TicketDto> tickets;
     private List<CouponDto> coupons;

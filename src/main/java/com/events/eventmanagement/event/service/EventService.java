@@ -10,7 +10,7 @@ import java.util.List;
 public interface EventService {
     CreateEventRespDto createEvent(CreateEventReqDto createEventReqDto, String email);
     List<GetEventsDto> getAllEvents(int page, int size);
-
+//    List<GetEventsDto> getAllEvents();
     Event getEventById(Long id);
     GetEventsDto searchEventById(Long id);
 }

@@ -12,8 +12,9 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -53,7 +54,7 @@ public class Event {
 
     @NotNull
     @Column(name = "time", nullable = false)
-    private Instant time;
+    private LocalTime time;
 
     @NotNull
     @ManyToOne
@@ -66,10 +67,10 @@ public class Event {
     private User organizer;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    private Set<Coupon> coupons = new LinkedHashSet<>();
+    private List<Coupon> coupons = new ArrayList<>();
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    private Set<Ticket> tickets = new LinkedHashSet<>();
+    private List<Ticket> tickets = new ArrayList<>();
 
     @NotNull
     @ColumnDefault("CURRENT_TIMESTAMP")
