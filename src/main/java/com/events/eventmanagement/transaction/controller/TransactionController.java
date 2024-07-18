@@ -19,7 +19,7 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @PostMapping("")
+    @PostMapping("/create-transaction")
     public ResponseEntity<?> createTransaction(@RequestBody TransactionRequestDto transactionRequestDto){
         var claims = Claims.getClaimsFromJwt();
         String email = (String) claims.get("sub");

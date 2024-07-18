@@ -1,6 +1,7 @@
 package com.events.eventmanagement.ticket.service.impl;
 
 import com.events.eventmanagement.exceptions.DataNotFoundException;
+import com.events.eventmanagement.exceptions.InputException;
 import com.events.eventmanagement.ticket.entity.Ticket;
 import com.events.eventmanagement.ticket.repository.TicketRepository;
 import com.events.eventmanagement.ticket.service.TicketService;
@@ -26,6 +27,10 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void reduceSeats(Ticket ticket, int seats) {
+        if(ticket.getAvailableSeats() == 0){
+            throw new InputException("Ticket sold out");
+        }
+
         int availableSeats = ticket.getAvailableSeats() - seats;
 
         ticket.setAvailableSeats(availableSeats);

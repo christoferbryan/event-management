@@ -56,7 +56,7 @@ public class CouponServiceImpl implements CouponService {
                 referral.setIsClaimed(true);
             }
             else {
-                throw new InputException("Referral coupon is already claimed");
+                throw new InputException("Referral coupon has already been claimed");
             }
         }
 

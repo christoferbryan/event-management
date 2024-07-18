@@ -1,5 +1,6 @@
 package com.events.eventmanagement.point.service.impl;
 
+import com.events.eventmanagement.exceptions.InputException;
 import com.events.eventmanagement.point.entity.Point;
 import com.events.eventmanagement.point.repository.PointRepository;
 import com.events.eventmanagement.point.service.PointService;
@@ -40,8 +41,17 @@ public class PointServiceImpl implements PointService {
     @Override
     public int redeemUserPoints(User user, int totalPrice) {
 
-        int pointsUsed;
-        int totalActivePoints = getActiveUserPoints(user.getId());
+        int pointsUsed = 0;
+        int totalActivePoints = 0;
+
+        List<Point> pointsUser = pointRepository.getPointsByUserId(user.getId());
+
+        if(!pointsUser.isEmpty()){
+            totalActivePoints = getActiveUserPoints(user.getId());
+        }
+        else {
+            throw new InputException("User does not have any points");
+        }
 
         pointsUsed = Math.min(totalPrice, totalActivePoints);
 

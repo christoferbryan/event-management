@@ -43,8 +43,8 @@ public class Transaction {
     private int totalAmount;
 
 
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
-    private List<TransactionItem> trxItems = new ArrayList<>();
+//    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
+//    private List<TransactionItem> trxItems = new ArrayList<>();
 
     @NotNull
     @ColumnDefault("CURRENT_TIMESTAMP")
