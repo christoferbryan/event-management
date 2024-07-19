@@ -81,10 +81,11 @@ public class EventServiceImpl implements EventService {
         return allEvents.stream().map(GetEventsDto::toDto).toList();
     }
 
-    public List<GetEventsDto> searchEvents(Pageable pageable, String title, String category, Long userId, LocalDate date, String location) {
+    @Override
+    public List<GetEventsDto> searchEvents(Pageable pageable, String title, Long category, Long organizer, LocalDate date, String location) {
         Specification<Event> specification = Specification.where(EventSpecification.byTitle(title))
                 .and(EventSpecification.byCategory(category))
-                .and(EventSpecification.byUserId(userId))
+                .and(EventSpecification.byUserId(organizer))
                 .and(EventSpecification.byDate(date))
                 .and(EventSpecification.byLocation(location));
 

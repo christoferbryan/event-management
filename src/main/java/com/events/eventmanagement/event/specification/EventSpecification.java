@@ -18,12 +18,12 @@ public class EventSpecification {
         });
     }
 
-    public static Specification<Event> byCategory(String category) {
+    public static Specification<Event> byCategory(Long categoryId) {
         return ((root, query, builder) -> {
-            if (category == null) {
+            if (categoryId == null) {
                 return builder.conjunction();
             }
-            return builder.equal(builder.lower(root.get("category")), category.toLowerCase());
+            return builder.equal(root.get("category").get("id"), categoryId);
         });
     }
 

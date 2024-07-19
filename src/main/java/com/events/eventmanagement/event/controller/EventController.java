@@ -40,15 +40,15 @@ public class EventController {
     @GetMapping("/filter")
     public ResponseEntity<?> searchEvents(
             @RequestParam(required = false) String title,
-            @RequestParam(required = false) String category,
-            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) Long category,
+            @RequestParam(required = false) Long organizer,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             @RequestParam(required = false) String location,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size){
         Pageable pageable = PageRequest.of(page, size);
 
-        return Response.successResponse("Filtered events retrieved successfully", eventService.searchEvents(pageable, title, category, userId, date, location));
+        return Response.successResponse("Filtered events retrieved successfully", eventService.searchEvents(pageable, title, category, organizer, date, location));
     }
 
     @GetMapping("/{id}")
