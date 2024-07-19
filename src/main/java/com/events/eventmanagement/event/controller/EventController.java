@@ -56,7 +56,7 @@ public class EventController {
         return Response.successResponse("Event with id " + id + " fetched successfully", eventService.searchEventById(id));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteEventById(@PathVariable("id") Long id){
         eventService.deleteEventById(id);
 
