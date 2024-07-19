@@ -44,4 +44,13 @@ public class EventSpecification {
             return builder.equal(root.get("date"), date);
         });
     }
+
+    public static Specification<Event> byLocation(String location) {
+        return ((root, query, builder)-> {
+            if (location == null) {
+                return builder.conjunction();
+            }
+            return builder.equal(root.get("location"), location);
+        });
+    }
 }

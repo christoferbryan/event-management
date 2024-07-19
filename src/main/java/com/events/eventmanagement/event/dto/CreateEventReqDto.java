@@ -24,7 +24,7 @@ public class CreateEventReqDto {
 
     public Event toEntity(){
         Event event = new Event();
-        event.setTitle(title);
+        event.setTitle(title.toLowerCase());
         event.setDescription(description);
         event.setLocation(location);
         event.setIsPaid(isPaid);

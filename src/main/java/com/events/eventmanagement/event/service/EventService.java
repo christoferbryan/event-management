@@ -15,7 +15,7 @@ public interface EventService {
     Event getEventById(Long id);
     GetEventsDto searchEventById(Long id);
 
-    List<GetEventsDto> getAllEvents(Pageable pageable, String title, String category, Long userId, LocalDate date);
+    List<GetEventsDto> searchEvents(Pageable pageable, String title, String category, Long userId, LocalDate date, String location);
 
     void deleteEventById(Long id);
 }

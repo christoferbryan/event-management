@@ -7,8 +7,13 @@ import com.events.eventmanagement.event.dto.CreateEventRespDto;
 import com.events.eventmanagement.event.entity.Event;
 import com.events.eventmanagement.event.service.EventService;
 import com.events.eventmanagement.response.Response;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/v1/events")
@@ -30,6 +35,20 @@ public class EventController {
     @GetMapping("")
     public ResponseEntity<?> getAllEvents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "6") int size ){
         return Response.successResponse("Events are retrieved successfully", eventService.getAllEvents(page, size));
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<?> searchEvents(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam(required = false) String location,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size){
+        Pageable pageable = PageRequest.of(page, size);
+
+        return Response.successResponse("Filtered events retrieved successfully", eventService.searchEvents(pageable, title, category, userId, date, location));
     }
 
     @GetMapping("/{id}")

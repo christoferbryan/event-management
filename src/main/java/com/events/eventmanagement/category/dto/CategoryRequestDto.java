@@ -10,7 +10,7 @@ public class CategoryRequestDto {
 
     public Category toEntity(){
         Category category = new Category();
-        category.setName(name);
+        category.setName(name.toLowerCase());
 
         return category;
     }
