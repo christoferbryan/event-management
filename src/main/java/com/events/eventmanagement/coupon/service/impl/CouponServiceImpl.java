@@ -80,6 +80,6 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public Coupon getCouponByCode(String code) {
-        return couponRepository.findByCode(code);
+        return couponRepository.findByCode(code).orElseThrow(() -> new DataNotFoundException("Coupon not found"));
     }
 }
