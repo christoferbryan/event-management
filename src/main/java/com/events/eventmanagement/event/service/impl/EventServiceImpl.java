@@ -12,6 +12,7 @@ import com.events.eventmanagement.event.repository.EventRepository;
 import com.events.eventmanagement.event.service.EventService;
 import com.events.eventmanagement.event.specification.EventSpecification;
 import com.events.eventmanagement.exceptions.DataNotFoundException;
+import com.events.eventmanagement.exceptions.InputException;
 import com.events.eventmanagement.ticket.dto.TicketDto;
 import com.events.eventmanagement.ticket.entity.Ticket;
 import com.events.eventmanagement.ticket.service.TicketService;
@@ -105,8 +106,14 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void deleteEventById(Long id) {
+    public void deleteEventById(Long id, String email) {
+        User organizer = userService.getUserByEmail(email);
+
         Event deletedEvent = eventRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Event not found"));
+
+        if( !(deletedEvent.getOrganizer()).equals(organizer) ){
+            throw new InputException("Deleting this event is not permitted");
+        }
 
         eventRepository.deleteById(id);
     }

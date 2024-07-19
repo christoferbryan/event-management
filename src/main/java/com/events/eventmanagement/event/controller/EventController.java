@@ -58,7 +58,10 @@ public class EventController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteEventById(@PathVariable("id") Long id){
-        eventService.deleteEventById(id);
+        var claims = Claims.getClaimsFromJwt();
+        String email = (String) claims.get("sub");
+
+        eventService.deleteEventById(id, email);
 
         return Response.successResponse("Delete event successful");
     }
