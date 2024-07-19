@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public class TransactionRequestDto {
     private Long eventId;
-    private Long couponId;
+    private String couponCode;
     private Boolean usePoints;
     private List<TransactionItemDto> items;
 }

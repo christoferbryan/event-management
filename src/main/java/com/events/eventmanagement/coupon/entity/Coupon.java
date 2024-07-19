@@ -25,6 +25,8 @@ public class Coupon {
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
+    private String code;
+
     @NotNull
     @Column(name = "discount", nullable = false)
     private int discount;

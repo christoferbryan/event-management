@@ -48,74 +48,6 @@ public class TransactionServiceImpl implements TransactionService {
         this.eventService = eventService;
         this.transactionItemService = transactionItemService;
     }
-//    @Override
-//    @Transactional
-//    public TransactionResponseDto createTransaction(TransactionRequestDto transactionRequestDto, String email) {
-//        int totalAmount = 0;
-//        int pointsUsed = 0;
-//        Coupon coupon = new Coupon();
-//        User buyer = userService.getUserByEmail(email);
-//        Event event = eventService.getEventById(transactionRequestDto.getEventId());
-//        List<TransactionItem> transactionItems = new ArrayList<>();
-//
-//        for(TransactionItemDto trxItemDto : transactionRequestDto.getItems()){
-//            Ticket ticket = ticketService.getTicketById(trxItemDto.getTicketId());
-//            int quantity = trxItemDto.getQuantity();
-//
-//            TransactionItem transactionItem = new TransactionItem();
-//            transactionItem.setTicket(ticket);
-//            transactionItem.setQuantity(quantity);
-//            transactionItem.setPrice(ticket.getPrice());
-//
-//            transactionItems.add(transactionItem);
-//
-//            ticketService.reduceSeats(ticket, quantity);
-//
-//            int subtotal = ticket.getPrice() * quantity;
-//            totalAmount += subtotal;
-//        }
-//
-//        if(transactionRequestDto.getCouponId() != null){
-//            coupon = couponService.getCouponById(transactionRequestDto.getCouponId());
-//
-//            int discount = couponService.useCoupon(transactionRequestDto.getCouponId(), totalAmount);
-//            totalAmount = totalAmount - discount;
-//        }
-//
-//        if(transactionRequestDto.getUsePoints()){
-//            pointsUsed = pointService.redeemUserPoints(buyer, totalAmount);
-//            totalAmount = totalAmount - pointsUsed;
-//        }
-//
-//        Transaction transaction = new Transaction();
-//        transaction.setBuyer(buyer);
-//        transaction.setEvent(event);
-//        transaction.setCoupon(coupon);
-//        transaction.setTotalAmount(totalAmount);
-//        transaction.setTrxItems(transactionItems);
-//
-//        transactionRepository.save(transaction);
-//
-//        for(TransactionItem trxItem : transactionItems){
-//            trxItem.setTransaction(transaction);
-//            transactionItemService.addNewTransactionItem(trxItem);
-//        }
-//
-//        TransactionResponseDto transactionResponseDto = new TransactionResponseDto();
-//        transactionResponseDto.setTransactionId(transaction.getId());
-//        transactionResponseDto.setTotalAmount(totalAmount);
-//        transactionResponseDto.setUsedPoints(pointsUsed);
-//
-//        UsedCouponDto usedCoupon = UsedCouponDto.toDto(coupon);
-//        transactionResponseDto.setUsedCoupon(usedCoupon);
-//
-//        List<TransactionItemRespDto> itemRespDtos = transactionItems.stream().map(TransactionItemRespDto::toDto).toList();
-//
-//        transactionResponseDto.setTrxItems(itemRespDtos);
-//
-//        return transactionResponseDto;
-//    }
-
     @Override
     @Transactional
     public TransactionResponseDto createTransaction(TransactionRequestDto transactionRequestDto, String email) {
@@ -152,11 +84,11 @@ public class TransactionServiceImpl implements TransactionService {
             totalAmount += subtotal;
         }
 
-        if(transactionRequestDto.getCouponId() != null){
-            coupon = couponService.getCouponById(transactionRequestDto.getCouponId());
+        if(transactionRequestDto.getCouponCode() != null){
+            coupon = couponService.getCouponByCode(transactionRequestDto.getCouponCode());
             transaction.setCoupon(coupon);
 
-            int discount = couponService.useCoupon(transactionRequestDto.getCouponId(), totalAmount, event);
+            int discount = couponService.useCoupon(coupon.getId(), totalAmount, event);
             totalAmount = totalAmount - discount;
         }
 
@@ -167,8 +99,6 @@ public class TransactionServiceImpl implements TransactionService {
 
         transaction.setTotalAmount(totalAmount);
         transactionRepository.save(transaction);
-
-//        transaction.setTrxItems(transactionItems);
 
         for(TransactionItem trxItem : transactionItems){
             trxItem.setTransaction(transaction);

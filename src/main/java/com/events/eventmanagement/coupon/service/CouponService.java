@@ -10,5 +10,5 @@ public interface CouponService {
 
     int useCoupon(Long couponId, int totalAmount, Event event);
 
-    Coupon getCouponById(Long id);
+    Coupon getCouponByCode(String code);
 }

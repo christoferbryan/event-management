@@ -7,6 +7,7 @@ import com.events.eventmanagement.coupon.service.CouponService;
 import com.events.eventmanagement.event.entity.Event;
 import com.events.eventmanagement.exceptions.DataNotFoundException;
 import com.events.eventmanagement.exceptions.InputException;
+import com.events.eventmanagement.generator.ReferralCodeGenerator;
 import com.events.eventmanagement.referral.entity.Referral;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,7 @@ public class CouponServiceImpl implements CouponService {
         }
 
         Coupon coupon = couponDto.toEntity();
+        coupon.setCode(ReferralCodeGenerator.generateCode(10));
         coupon.setEvent(event);
 
         return couponRepository.save(coupon);
@@ -46,8 +48,10 @@ public class CouponServiceImpl implements CouponService {
     public int useCoupon(Long couponId, int totalAmount, Event event) {
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new DataNotFoundException("Coupon not found"));
 
-        if( !(coupon.getEvent().equals(event)) ){
-            throw new InputException("Coupon not valid for this event");
+        if(!coupon.getIsReferral()){
+            if( !(coupon.getEvent().equals(event)) ){
+                throw new InputException("Coupon not valid for this event");
+            }
         }
 
         if(coupon.getExpiredAt().isBefore(LocalDate.now())){
@@ -75,7 +79,7 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public Coupon getCouponById(Long id) {
-        return couponRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Coupon not found"));
+    public Coupon getCouponByCode(String code) {
+        return couponRepository.findByCode(code);
     }
 }

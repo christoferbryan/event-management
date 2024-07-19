@@ -1,6 +1,7 @@
 package com.events.eventmanagement.users.service.impl;
 
 import com.events.eventmanagement.coupon.dto.CouponDto;
+import com.events.eventmanagement.coupon.entity.Coupon;
 import com.events.eventmanagement.coupon.service.CouponService;
 import com.events.eventmanagement.exceptions.DataNotFoundException;
 import com.events.eventmanagement.exceptions.InputException;
@@ -48,7 +49,7 @@ public class UserServiceImpl implements UserService {
         registeredUser.setPassword(passwordEncoder.encode(user.getPassword()));
 
         if(registeredUser.getRole() == User.UserRole.CUSTOMER){
-            String code = ReferralCodeGenerator.generateReferralCode();
+            String code = ReferralCodeGenerator.generateCode(8);
             registeredUser.setReferralCode(code);
         }
         else {
@@ -56,6 +57,8 @@ public class UserServiceImpl implements UserService {
         }
 
         userRepository.save(registeredUser);
+
+        Coupon referralCoupon = new Coupon();
 
         if(user.getReferralCode() != null && registeredUser.getRole() == User.UserRole.CUSTOMER){
             User referrer = userRepository.findByReferralCode(user.getReferralCode()).orElseThrow(() -> new DataNotFoundException("User not found"));
@@ -65,7 +68,9 @@ public class UserServiceImpl implements UserService {
             CouponDto couponDto = new CouponDto();
             couponDto.setIsReferral(true);
             couponDto.setReferral(referral);
-            couponService.createCoupon(couponDto);
+            referralCoupon = couponService.createCoupon(couponDto);
+
+            return RegisterResponseDto.toDto(registeredUser, referralCoupon);
         }
 
         return RegisterResponseDto.toDto(registeredUser);
